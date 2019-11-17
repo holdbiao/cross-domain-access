@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 1、简单的jsonp跨域 -->
+    <!-- <script>
+        function show (data) {
+            console.log('接收到的数据：', data)
+        }
+    </script>
+    <script src="https://www.baidu.com/sugrec?pre=1&p=3&ie=utf-8&json=1&prod=pc&from=pc_web&sugsid=1463,21111,29911,29567,29221,22159&wd=关键字&cb=show"></script> -->
+
+    <!-- 2、封装jsonp方法 -->
+    <script>
+        // jsonp方法
+        function jsonp ({url, params, cb}) {
+            return new Promise((resolve, reject) => {
+                let script = document.createElement('script')
+                // 创建接收方法
+                window[cb] = function (data) {
+                    resolve(data)
+                    document.body.removeChild(script)
+                }
+                // 创建请求标签
+                params = {...params, cb}
+                let arrs = []
+                for(let key in params) {
+                    arrs.push(`${key}=${params[key]}`)
+                }
+                script.src = `${url}&${arrs.join('&')}`
+                document.body.appendChild(script)
+            })
+        }
+        // 使用封装的方法
+        // 缺点：1、只能使用get请求
+        //     2、容易遭受xss攻击，放入可执行的代码
+        // jsonp({
+        //     url: 'https://www.baidu.com/sugrec?pre=1&p=3&ie=utf-8&json=1&prod=pc&from=pc_web&sugsid=1463,21111,29911,29567,29221,22159',
+        //     params: {
+        //         wd: '测试'
+        //     },
+        //     cb: 'show'
+        // }).then(data => {
+        //     console.log(data)
+        // })
+
+        // 3、自己写服务端 http://localhost:3000/say?wd=23423&cb=show
+        jsonp({
+            url: 'http://localhost:3000/say?re=1',
+            params: {
+                wd: '自己服务测试'
+            },
+            cb: 'show'
+        }).then(data => {
+            console.log(data)
+        })
+    </script>
+</body>
+</html>

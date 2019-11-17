@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    hello
+    <script>
+        let xhr = new XMLHttpRequest // 创建xhr
+        document.cookie = 'name=biucookie'
+        // 后端还需要设置 Access-Control-Allow-Methods 允许前端请求方法
+        xhr.open('post', 'http://localhost:4000/getData', true) // true：是否异步
+        xhr.setRequestHeader('name', 'biu') // 如果后端不配置允许头Access-Control-Allow-Headers，前端报错
+        // xhr.setRequestHeader('Access-Control-Allow-Max-Age', -1)
+        xhr.onreadystatechange = function () { // 监听
+            if (xhr.readyState === 4) { // 0=>初始化 1=>载入 2=>载入完成 3=>解析 4=>完成
+                if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                    console.log(xhr.response)
+                    console.log(xhr.getResponseHeader('resname'))
+                }
+            }
+        }
+        xhr.send() // 发送
+    </script>
+</body>
+</html>

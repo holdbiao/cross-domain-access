@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 路径后面的hash值可以用来通信
+    a和b是同域的： http://localhost:3000
+    c是独立的：http://localhost:4000
+    目的a想访问c
+    a传给c一个hash值 c收到hash后 c把hash值传给b b把结果放到a的hash中 -->
+    <iframe src="http://localhost:4000/c.html#i-love-you" frameborder="0"></iframe>
+    <script>
+        window.onhashchange = function () {
+            console.log('b to a', location.hash)
+        }
+    </script>
+</body>
+</html>

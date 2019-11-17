@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <!-- 在实际项目开发中可能会碰到在 a.com 页面中嵌套 b.com 页面，这时第一反应是使用 iframe，但是产品又提出在 a.com 中操作，b.com 中进行显示，或者相反。 -->
+    <iframe src="http://localhost:4000/b.html" frameborder="0" id="frame" onload="load()"></iframe>
+    <script>
+        function load () { // iframe加载完成后执行
+            let frame = document.getElementById('frame')
+            frame.contentWindow.postMessage('a to b', 'http://localhost:4000')
+            window.onmessage = function (e) {
+                console.log(e)
+            }
+        }
+    </script>
+</body>
+</html>
